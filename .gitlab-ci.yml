@@ -3,31 +3,28 @@ stages:
 
 run-maestro-tests:
   stage: test
-  image: cimg/android:latest
+  image: circleci/android:api-30  # Replace with a valid image tag
   variables:
     ANDROID_HOME: "/opt/android"
     PATH: "$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$PATH"
   before_script:
-    # Accept Android SDK licenses
+    # Accept licenses and install required SDK components
     - yes | sdkmanager --licenses
+    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
     # Install Maestro
     - curl -Ls "https://get.maestro.mobile.dev" | bash
-    # Install necessary SDK components
-    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86_64"
-    # Create a new AVD (Android Virtual Device)
-    - echo "no" | avdmanager create avd -n test_avd -k "system-images;android-30;google_apis;x86_64" --device "pixel"
-    # Start the emulator
+    # Set up and start the emulator
+    - echo "no" | avdmanager create avd -n test_avd -k "system-images;android-30;google_apis;x86" || true
     - emulator -avd test_avd -no-snapshot -no-audio -no-window &
     # Wait for the emulator to be ready
     - adb wait-for-device
     - adb shell input keyevent 82
   script:
-    # Install APK to emulator (replace with actual APK path)
-    - adb install app-debug.apk
-    # Run Maestro test
+    # Install the APK and run Maestro tests
+    - adb install app-debug.apk  # Replace with the actual APK path if necessary
     - maestro test /Users/josestepha/AquaProjects/maestro/android.yaml --format junit --output results.xml
   after_script:
-    # Stop emulator after tests
+    # Stop the emulator after tests
     - adb emu kill
   artifacts:
     paths:
