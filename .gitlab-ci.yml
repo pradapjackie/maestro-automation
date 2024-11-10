@@ -3,7 +3,7 @@ stages:
 
 run-maestro-cloud-test:
   stage: test
-  image: overture/maestro
+  image: farfetchoss/maestro
   before_script:
     # Install prerequisites: Java (OpenJDK 11), curl, and unzip
     # - apt-get update && apt-get install -y openjdk-11-jdk curl unzip
