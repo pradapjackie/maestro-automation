@@ -10,14 +10,16 @@ before_script:
   # Install Android SDK tools (only needed if not using a pre-configured Docker image)
   - apt-get update -y
   - apt-get install -y android-sdk adb curl unzip
-  - curl -s https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz | tar xz
+  # Download and extract Maestro directly from the correct source
+  - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz -o maestro.tar.gz
+  - tar -xzvf maestro.tar.gz
   - export PATH=$PATH:$CI_PROJECT_DIR/maestro
 
 # Job to run Maestro tests
 maestro_test:
   stage: test
   script:
-    - adb install app-release.apk
+    - adb install sample.apk
     - maestro test android.yaml --format junit --output results.xml
   artifacts:
     paths:
