@@ -3,17 +3,16 @@ stages:
 
 run-maestro-tests:
   stage: test
-  image: registry.gitlab.com/gitlab-org/ci-cd/android:latest
+  image: cirrusci/android-sdk:30
   variables:
     ANDROID_HOME: "/opt/android-sdk"
     PATH: "$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
   before_script:
-    # Accept licenses and install required components
-    - yes | sdkmanager --licenses
-    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
     # Install Maestro
     - curl -Ls "https://get.maestro.mobile.dev" | bash
-    # Set up and start the emulator
+    # Accept licenses and install additional Android SDK components if needed
+    - yes | sdkmanager --licenses
+    # Start the Android emulator (create an emulator if not already created)
     - echo "no" | avdmanager create avd -n test_avd -k "system-images;android-30;google_apis;x86" || true
     - emulator -avd test_avd -no-snapshot -no-audio -no-window &
     # Wait for the emulator to be ready
