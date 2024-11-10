@@ -6,13 +6,17 @@ stages:
 image: openjdk:11-jdk-slim
 
 # Job to install dependencies and set up the environment
+# Replace tar extraction with unzip if the file is a .zip
 before_script:
-  # Install Android SDK tools (only needed if not using a pre-configured Docker image)
+  # Install dependencies
   - apt-get update -y
   - apt-get install -y android-sdk adb curl unzip
-  # Download and extract Maestro directly from the correct source
-  - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz -o maestro.tar.gz
-  - tar -xzvf maestro.tar.gz
+
+  # Download Maestro (replace URL if necessary)
+  - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.zip -o maestro.zip
+
+  # Extract the zip file
+  - unzip maestro.zip
   - export PATH=$PATH:$CI_PROJECT_DIR/maestro
 
 # Job to run Maestro tests
