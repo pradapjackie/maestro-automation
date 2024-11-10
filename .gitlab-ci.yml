@@ -1,49 +1,30 @@
 stages:
   - test
-  - report
 
-# Job to install dependencies and set up the environment
-before_script:
-  - apt-get update -y
-  - apt-get install -y curl unzip tar openjdk-11-jdk android-sdk
-  - curl -L https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.17+8/OpenJDK11U-jdk_x64_linux_hotspot_11.0.17_8.tar.gz -o openjdk-11.tar.gz
-  - tar -xzvf openjdk-11.tar.gz
-  - export PATH=$PATH:$CI_PROJECT_DIR/jdk-11/bin
-  # Install Android SDK
-  - sdkmanager "system-images;android-28;google_apis;x86_64" "platforms;android-28" "build-tools;28.0.3"
-  # Create and start the emulator
-  - echo no | avdmanager create avd -n test -k "system-images;android-28;google_apis;x86_64" --force
-  - emulator -avd test -no-window -gpu off &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &  # Unlock the emulator
-
-# Job to run Maestro tests
-maestro_test:
+run-maestro-tests:
   stage: test
+  image: openjdk:11
+  variables:
+    ANDROID_HOME: "/sdk"
+    PATH: "$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$PATH"
+  before_script:
+    # Install Maestro
+    - curl -Ls "https://get.maestro.mobile.dev" | bash
+    # Install Android SDK
+    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+    # Start the Android emulator (adjust to your emulator configuration if needed)
+    - emulator -avd test_avd -no-snapshot -no-audio -no-window &
+    # Wait for emulator to be ready
+    - adb wait-for-device
+    - adb shell input keyevent 82
   script:
-    - adb install sample.apk  # Install your APK
-    - maestro test android.yaml --format junit --output results.xml  # Run tests using Maestro
+    # Run Maestro test
+    - adb install sample.apk  # Replace with actual APK path if necessary
+    - maestro test android.yaml --format junit --output results.xml
+  after_script:
+    # Stop emulator after tests
+    - adb emu kill
   artifacts:
     paths:
-      - results.xml  # Store the results in GitLab
-
-# Job to generate Allure report from the test results
-allure_report:
-  stage: report
-  image: "alpine:latest"
-  script:
-    - apk add --no-cache allure  # Install Allure
-    - mkdir -p allure-results
-    - mv results.xml allure-results/  # Move results to the Allure results folder
-    - allure serve allure-results  # Generate and serve the Allure report
-  dependencies:
-    - maestro_test  # Make sure the report job runs after maestro_test
-  artifacts:
-    paths:
-      - allure-results  # Save the Allure results
-  only:
-    - main  # Only run on the main branch (or your preferred branch)
-
-# After script to kill the emulator once tests are complete
-after_script:
-  # - adb -s emulator-5554 emu kill  # Shut down the emulator after the tests
+      - results.xml
+    expire_in: 1 day
