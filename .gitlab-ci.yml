@@ -12,8 +12,9 @@ run-maestro-cloud-test:
     # Ensure maestro is in the PATH for this session
     - echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> ~/.bashrc
     - source ~/.bashrc
+    - tree
     # Log in to Maestro Cloud (use your API key)
-    - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
+    # - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
 
   script:
     - ls
