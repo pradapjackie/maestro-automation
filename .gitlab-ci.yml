@@ -5,8 +5,8 @@ run-maestro-cloud-test:
   stage: test
   image: ubuntu:20.04
   before_script:
-    # Install Java (OpenJDK 11)
-    - apt-get update && apt-get install -y openjdk-11-jdk curl
+    # Install prerequisites: Java (OpenJDK 11), curl, and unzip
+    - apt-get update && apt-get install -y openjdk-11-jdk curl unzip
     # Install Maestro CLI
     - curl -Ls "https://get.maestro.mobile.dev" | bash
     # Log in to Maestro Cloud (use your API key)
