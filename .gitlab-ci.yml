@@ -13,7 +13,8 @@ run-maestro-cloud-test:
     - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
 
   script:
-    - maestro cloud app-debug.apk android.yaml  
+    - ls
+    # - maestro cloud app-debug.apk android.yaml  
 
   after_script:
     - echo "Check the results in the Maestro Console."
