@@ -5,11 +5,14 @@ run-maestro-cloud-test:
   stage: test
   image: ubuntu:20.04
   before_script:
-    - apt-get update && apt-get install -y curl
+    # Install Java (OpenJDK 11)
+    - apt-get update && apt-get install -y openjdk-11-jdk curl
+    # Install Maestro CLI
     - curl -Ls "https://get.maestro.mobile.dev" | bash
-    - maestro login <<< "$MAESTRO_API_KEY"  
+    # Log in to Maestro Cloud (use your API key)
+    - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
+
   script:
-    - cd samples
     - maestro cloud app-debug.apk android.yaml  
 
   after_script:
