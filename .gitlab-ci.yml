@@ -3,33 +3,24 @@ stages:
 
 run-maestro-tests:
   stage: test
-  image: ubuntu:20.04
+  image: registry.gitlab.com/gitlab-org/ci-cd/android:latest
   variables:
     ANDROID_HOME: "/opt/android-sdk"
     PATH: "$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
   before_script:
-    # Install necessary packages
-    - apt-get update && apt-get install -y curl unzip openjdk-11-jdk
-    # Install Android SDK
-    - mkdir -p "$ANDROID_HOME/cmdline-tools"
-    - curl -o sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-    - unzip sdk.zip -d "$ANDROID_HOME/cmdline-tools"
-    - mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
-    - rm sdk.zip
     # Accept licenses and install required components
     - yes | sdkmanager --licenses
-    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86"
+    - sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
     # Install Maestro
     - curl -Ls "https://get.maestro.mobile.dev" | bash
-    # Create and start the emulator
+    # Set up and start the emulator
     - echo "no" | avdmanager create avd -n test_avd -k "system-images;android-30;google_apis;x86" || true
     - emulator -avd test_avd -no-snapshot -no-audio -no-window &
     # Wait for the emulator to be ready
     - adb wait-for-device
     - adb shell input keyevent 82
   script:
-    # Install the APK and run Maestro tests
-    - adb install app-debug.apk  # Replace with the actual APK path if necessary
+    - adb install app-debug.apk
     - maestro test android.yaml --format junit --output results.xml
   after_script:
     # Stop the emulator after tests
