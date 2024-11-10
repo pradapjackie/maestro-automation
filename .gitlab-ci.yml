@@ -5,7 +5,7 @@ stages:
 # Job to install dependencies and set up the environment
 before_script:
   - apt-get update -y
-  - apt-get install -y openjdk-11-jdk android-sdk curl unzip tar
+  - apt-get install -y openjdk:11-jdk-slim android-sdk curl unzip tar
 
   # Download Maestro (ensure the correct URL and format)
   - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz -o maestro.tar.gz
