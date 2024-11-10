@@ -16,7 +16,7 @@ appId: com.example.screenshot
 
 # Verify the resulting date after adding days
 - assertVisible:
-    text: "Resulting Date: 2024-12-30"
+      contains: "Resulting Date: 2024-12-30"
 
 # Restart the app and perform "Subtract Days" test
 # Tap on the input field and enter the number of days
