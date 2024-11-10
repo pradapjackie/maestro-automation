@@ -46,4 +46,4 @@ allure_report:
 
 # After script to kill the emulator once tests are complete
 after_script:
-  - adb -s emulator-5554 emu kill  # Shut down the emulator after the tests
+  # - adb -s emulator-5554 emu kill  # Shut down the emulator after the tests
