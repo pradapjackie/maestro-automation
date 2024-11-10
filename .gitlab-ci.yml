@@ -5,12 +5,16 @@ stages:
 before_script:
   - apt-get update -y
   - apt-get install -y curl unzip tar android-sdk
-  # Download OpenJDK 11 from AdoptOpenJDK
-  - curl -L https://github.com/adoptium/temurin11/releases/download/jdk-11.0.15+10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.15_10.tar.gz -o openjdk-11.tar.gz
+  # Download OpenJDK 11 from Adoptium's official site
+  - curl -L https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.17+8/OpenJDK11U-jdk_x64_linux_hotspot_11.0.17_8.tar.gz -o openjdk-11.tar.gz
+  # Verify the file type
+  - file openjdk-11.tar.gz
+  # Extract OpenJDK 11 if the file is valid
   - tar -xzvf openjdk-11.tar.gz
   - export PATH=$PATH:$CI_PROJECT_DIR/jdk-11/bin
   # Verify the installation
   - java -version
+
 
 # Job to run Maestro tests
 maestro_test:
