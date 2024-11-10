@@ -4,24 +4,19 @@ stages:
 
 # Job to install dependencies and set up the environment
 before_script:
-  # Update apt repository and install dependencies
   - apt-get update -y
-  - apt-get install -y curl unzip tar openjdk-11-jdk android-sdk
-
-  # Download Maestro (with correct URL)
-  - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz -o maestro.tar.gz
-
-  # Check if the tar.gz file is valid and extract it
-  - if file maestro.tar.gz | grep -q 'gzip compressed data'; then tar -xzvf maestro.tar.gz; else echo "File is not a valid tar.gz"; exit 1; fi
-
-  # Add Maestro to PATH
-  - export PATH=$PATH:$CI_PROJECT_DIR/maestro
+  - apt-get install -y curl unzip tar android-sdk
+  # Download OpenJDK 11
+  - curl -L "https://adoptopenjdk.net/releases.html?variant=openjdk11#x64-linux" -o openjdk-11.tar.gz
+  - tar -xzvf openjdk-11.tar.gz
+  - export PATH=$PATH:$CI_PROJECT_DIR/jdk-11/bin
+  - echo "OpenJDK 11 installed successfully"
 
 # Job to run Maestro tests
 maestro_test:
   stage: test
   script:
-    - adb install sample.apk  # Replace with actual APK path if necessary
+    - adb install sample.apk
     - maestro test android.yaml --format junit --output results.xml
   artifacts:
     paths:
@@ -42,4 +37,4 @@ allure_report:
     paths:
       - allure-results
   only:
-    - main  # Or your desired branch
+    - main  # or your desired branch
