@@ -2,15 +2,15 @@ stages:
   - test
   - report
 
-# Job to install dependencies and set up the environment
 before_script:
   - apt-get update -y
   - apt-get install -y curl unzip tar android-sdk
-  # Download OpenJDK 11
-  - curl -L "https://adoptopenjdk.net/releases.html?variant=openjdk11#x64-linux" -o openjdk-11.tar.gz
+  # Download OpenJDK 11 from AdoptOpenJDK
+  - curl -L https://github.com/adoptium/temurin11/releases/download/jdk-11.0.15+10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.15_10.tar.gz -o openjdk-11.tar.gz
   - tar -xzvf openjdk-11.tar.gz
   - export PATH=$PATH:$CI_PROJECT_DIR/jdk-11/bin
-  - echo "OpenJDK 11 installed successfully"
+  # Verify the installation
+  - java -version
 
 # Job to run Maestro tests
 maestro_test:
