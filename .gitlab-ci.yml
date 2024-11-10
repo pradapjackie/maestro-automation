@@ -6,12 +6,17 @@ stages:
 before_script:
   # Update apt repository and install dependencies
   - apt-get update -y
-  - apt-get install -y curl unzip tar openjdk-11-jdk android-sdk
+  - apt-get install -y curl unzip tar software-properties-common
 
+  # Add PPA for OpenJDK 11
+  - add-apt-repository ppa:openjdk-r/ppa -y
+  - apt-get update -y
+  - apt-get install -y openjdk-11-jdk android-sdk
+  
   # Download Maestro (with correct URL)
   - curl -L https://github.com/mobile-dev-inc/maestro/releases/download/v0.9.7/maestro-0.9.7-linux-x86_64.tar.gz -o maestro.tar.gz
   
-  # Extract Maestro without checking file type
+  # Extract Maestro
   - tar -xzvf maestro.tar.gz || { echo "Error extracting maestro.tar.gz"; exit 1; }
   
   # Add Maestro to PATH
