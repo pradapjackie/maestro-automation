@@ -3,7 +3,7 @@ stages:
 
 run-maestro-tests:
   stage: test
-  image: openjdk:11
+  image: cimg/android:latest
   variables:
     ANDROID_HOME: "/sdk"
     PATH: "$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$PATH"
