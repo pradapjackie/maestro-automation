@@ -5,7 +5,7 @@ run-maestro-cloud-test:
   stage: test
   image: pradapjackie/maestro:1.39.1
   before_script:
-    - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
+    # - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
     # - maestro cloud --apiKey $MAESTRO_API_KEY <app_file> .maestro/
 
   script:
