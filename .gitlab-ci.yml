@@ -3,17 +3,8 @@ stages:
 
 run-maestro-cloud-test:
   stage: test
-  image: farfetchoss/maestro
+  image: pradapjackie/maestro:1.39.1
   before_script:
-    # Install prerequisites: Java (OpenJDK 11), curl, and unzip
-    # - apt-get update && apt-get install -y openjdk-11-jdk curl unzip
-    # Install Maestro CLI
-    # - curl -Ls "https://get.maestro.mobile.dev" | bash
-    # Ensure maestro is in the PATH for this session
-    # - echo 'export PATH="$HOME/.maestro/bin:$PATH"' >> ~/.bashrc
-    # - source ~/.bashrc
-    # - tree
-    # Log in to Maestro Cloud (use your API key)
     - maestro login <<< "$MAESTRO_API_KEY"  # Ensure the MAESTRO_API_KEY is stored in your CI/CD environment variables
 
   script:
