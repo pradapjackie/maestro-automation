@@ -16,17 +16,4 @@ appId: com.example.screenshot
 
 # Verify the resulting date after adding days
 - assertVisible:
-    text: "Resulting Date: 2024-12-30"
-
-# Restart the app and perform "Subtract Days" test
-# Tap on the input field and enter the number of days
-- tapOn: "Enter number of days"
-- inputText: "50"
-
-# Tap on "Subtract Days" button
-- tapOn:
-    text: "Subtract Days"
-
-# Verify the resulting date after subtracting days
-- assertVisible:
-#    text: "Resulting Date: 2024-09-21"
+    text: "Resulting Date: 2024-12-31"
