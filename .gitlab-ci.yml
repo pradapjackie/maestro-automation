@@ -11,7 +11,9 @@ run-maestro-cloud-test:
   script:
     - ls
     # - maestro cloud app-debug.apk android.yaml  
-    - maestro cloud --apiKey $MAESTRO_API_KEY --name android app-release.apk .maestro/
+    # - maestro cloud --apiKey $MAESTRO_API_KEY --name android app-release.apk .maestro/
+    - echo $MAESTRO_API_KEY
+    - maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
 
   after_script:
     - echo "Check the results in the Maestro Console."
