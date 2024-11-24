@@ -1,0 +1,25 @@
+name: Run Maestro Cloud Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-maestro-cloud-test:
+    runs-on: ubuntu-latest
+    container: 
+      image: pradapjackie/maestro:1.39.1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run Maestro Cloud Test
+        env:
+          MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY }}
+        run: |
+          maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+      
+      - name: Post-test Notification
+        run: echo "Check the results in the Maestro Console."
