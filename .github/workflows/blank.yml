@@ -1,25 +1,36 @@
-name: Run Maestro Cloud Test
+name: Maestro Test Automation
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
   run-maestro-cloud-test:
     runs-on: ubuntu-latest
-    container: 
-      image: pradapjackie/maestro:1.39.1
+    
+    container:
+      image: pradapjackie/maestro:1.39.1 # Use Maestro Docker image
+    
     steps:
-      - name: Checkout code
+      # Checkout the code
+      - name: Checkout Code
         uses: actions/checkout@v3
+
+      # Set up environment variables
+      - name: Set up environment variables
+        run: echo "MAESTRO_API_KEY=${{ secrets.MAESTRO_API_KEY }}" >> $GITHUB_ENV
       
+      # Run Maestro test
       - name: Run Maestro Cloud Test
-        env:
-          MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY }}
         run: |
           maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
       
-      - name: Post-test Notification
+      # Post-test action
+      - name: After Script - Notify Results
         run: echo "Check the results in the Maestro Console."
