@@ -1,36 +1,30 @@
-name: Maestro Test Automation
+name: Simple Job
 
 on:
   push:
     branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
+      - main  # Runs on push to the 'main' branch
+  pull_request:  # Runs on pull requests
 
 jobs:
-  run-maestro-cloud-test:
+  build:
     runs-on: ubuntu-latest
-    
-    container:
-      image: pradapjackie/maestro:1.39.1 # Use Maestro Docker image
-    
+
     steps:
-      # Checkout the code
+      # Step 1: Check out the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up environment variables
-      - name: Set up environment variables
-        run: echo "MAESTRO_API_KEY=${{ secrets.MAESTRO_API_KEY }}" >> $GITHUB_ENV
-      
-      # Run Maestro test
-      - name: Run Maestro Cloud Test
-        run: |
-          maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
-      
-      # Post-test action
-      - name: After Script - Notify Results
-        run: echo "Check the results in the Maestro Console."
+      # Step 2: Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: Run a script (e.g., tests)
+      - name: Run Tests
+        run: npm test
