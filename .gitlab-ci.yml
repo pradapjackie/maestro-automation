@@ -1,12 +1,21 @@
-stages:
-  - test
+container:
+  image: ubuntu:20.04
 
-run-maestro-cloud-test:
-  stage: test
-  image: pradapjackie/maestro:1.39.1
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v3
 
-  script:
-    - maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+  - name: Install Maestro and dependencies
+    run: |
+      apt-get update
+      apt-get install -y wget curl
+      wget https://github.com/maestrodev/maestro-cli/releases/download/v1.39.1/maestro-linux-x64-1.39.1.tar.gz
+      tar -xvzf maestro-linux-x64-1.39.1.tar.gz
+      mv maestro /usr/local/bin/
 
-  after_script:
-    - echo "Check the results in the Maestro Console."
+  - name: Run Maestro Cloud Test
+    run: |
+      maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+
+  - name: After Script - Notify Results
+    run: echo "Check the results in the Maestro Console."
