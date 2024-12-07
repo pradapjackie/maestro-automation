@@ -8,23 +8,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu:20.04
 
     steps:
       # Step 1: Check out the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Step 3: Install dependencies
-      - name: Install Dependencies
-        run: npm install
 
       # Step 4: Run a script (e.g., tests)
-      - name: Run Tests
-        run: npm test
+      - name: Install Maestro and dependencies
+        run: |
+          apt-get update
+          apt-get install -y wget curl
+          wget https://github.com/maestrodev/maestro-cli/releases/download/v1.39.1/maestro-linux-x64-1.39.1.tar.gz
+          tar -xvzf maestro-linux-x64-1.39.1.tar.gz
+          mv maestro /usr/local/bin/
+
