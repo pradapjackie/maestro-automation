@@ -12,11 +12,25 @@ jobs:
     container:
       image: alpine:latest
     steps:
-      - name: Install Maestro and Dependencies
+      - name: Install Dependencies
         run: |
-          apk add --no-cache openjdk8 curl bash
-          curl -L https://get.maestro.mobile.dev | bash
+          apk add --no-cache openjdk8 curl bash zip
+          echo "Dependencies installed successfully."
+
+      - name: Download and Install Maestro
+        run: |
+          echo "Downloading Maestro..."
+          curl -L https://get.maestro.mobile.dev -o install_maestro.sh
+          chmod +x install_maestro.sh
+          ./install_maestro.sh || (echo "Failed to install Maestro" && exit 1)
+
+      - name: Verify Maestro Installation
+        run: |
+          if ! command -v maestro &> /dev/null; then
+            echo "Maestro installation failed."
+            exit 1
+          fi
           maestro --version
 
-      - name: Verify Success
+      - name: Confirm Completion
         run: echo "Maestro version check completed successfully."
