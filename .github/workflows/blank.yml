@@ -24,8 +24,14 @@ jobs:
           chmod +x install_maestro.sh
           ./install_maestro.sh || (echo "Failed to install Maestro" && exit 1)
 
+      - name: Add Maestro to PATH
+        run: |
+          export PATH="$PATH:$HOME/.maestro/bin"
+          echo "PATH updated to include Maestro: $PATH"
+
       - name: Verify Maestro Installation
         run: |
+          export PATH="$PATH:$HOME/.maestro/bin"
           if ! command -v maestro &> /dev/null; then
             echo "Maestro installation failed."
             exit 1
