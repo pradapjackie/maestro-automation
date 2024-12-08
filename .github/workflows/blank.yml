@@ -12,5 +12,10 @@ jobs:
     container:
       image: pradapjackie/maestro:1.39.1
     steps:
+      - name: Verify Docker Image
+        run: docker --version
+
       - name: Check Maestro Version
-        run: maestro --version
+        run: |
+          echo "Starting Maestro version check..."
+          maestro --version
