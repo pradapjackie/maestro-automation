@@ -1,25 +1,16 @@
-name: Simple Job
+name: Maestro Version Check
 
 on:
   push:
     branches:
-      - main  # Runs on push to the 'main' branch
-  pull_request:  # Runs on pull requests
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: pradapjackie/maestro:1.39.1
-
+  maestro-version-check:
+    runs-on: ubuntu-latest
+    container:
+      image: pradapjackie/maestro:1.39.1
     steps:
-      # Step 1: Check out the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install maestro
-        run: maestro -v
-
-      - name: Run Maestro Cloud Test
-        env:
-          MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY }}
-        run: |
-          maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+      - name: Check Maestro Version
+        run: maestro --version
