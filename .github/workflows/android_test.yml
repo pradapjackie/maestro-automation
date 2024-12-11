@@ -37,6 +37,6 @@ jobs:
           maestro --version
           ls
           pwd
-          cd ..
+          cd ../،،
           ls
           # maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY_SECRETS }} .maestro/app-release.apk .maestro/android.yaml
