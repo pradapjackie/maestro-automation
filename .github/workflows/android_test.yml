@@ -12,6 +12,9 @@ jobs:
     container:
       image: alpine:latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install Dependencies
         run: |
           apk add --no-cache openjdk8 curl bash zip
@@ -29,14 +32,17 @@ jobs:
           export PATH="$PATH:$HOME/.maestro/bin"
           echo "PATH updated to include Maestro: $PATH"
 
-      - name: Verify Maestro Installation
+      - name: Verify Maestro Installation and List Files
         env:
           MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY_SECRETS }}
         run: |
           export PATH="$PATH:$HOME/.maestro/bin"
           maestro --version
-          ls
+          echo "Current directory:"
           pwd
-          cd ../،،
-          ls
+          echo "Files in the current directory:"
+          ls -l
+          echo "Files in the parent directory:"
+          ls -l ../
+          echo "Run Maestro commands"
           # maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY_SECRETS }} .maestro/app-release.apk .maestro/android.yaml
