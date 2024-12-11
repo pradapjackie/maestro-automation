@@ -33,7 +33,9 @@ jobs:
         env:
           MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY_SECRETS }}
         run: |
-          echo "The secret used is MAESTRO_API_KEY_SECRETS"
+          echo "The secret used is ${{ secrets.MAESTRO_API_KEY_SECRETS }}"
+          echo "${{ secrets.MAESTRO_API_KEY_SECRETS }}"
+          echo ${{ secrets.MAESTRO_API_KEY_SECRETS }}
           # export PATH="$PATH:$HOME/.maestro/bin"
           # maestro --version
           # echo ${{ secrets.MAESTRO_API_KEY }}
