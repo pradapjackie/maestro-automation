@@ -30,10 +30,8 @@ jobs:
           echo "PATH updated to include Maestro: $PATH"
 
       - name: Verify Maestro Installation
-        env:
-          MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY }}
         run: |
           export PATH="$PATH:$HOME/.maestro/bin"
           maestro --version
-          echo MAESTRO_API_KEY
-          # maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+          echo ${{ secrets.MAESTRO_API_KEY }}
+          # maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY }} .maestro/app-release.apk .maestro/android.yaml
