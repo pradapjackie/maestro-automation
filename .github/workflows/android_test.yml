@@ -36,3 +36,9 @@ jobs:
 
       - name: Confirm Completion
         run: echo "Maestro version check completed successfully."
+      - name: Run Maestro Cloud Test
+        env:
+          MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY }}
+        run: |
+          maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+      
