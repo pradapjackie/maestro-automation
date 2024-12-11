@@ -32,10 +32,6 @@ jobs:
       - name: Verify Maestro Installation
         run: |
           export PATH="$PATH:$HOME/.maestro/bin"
-          if ! command -v maestro &> /dev/null; then
-            echo "Maestro installation failed."
-            exit 1
-          fi
           maestro --version
 
       - name: Confirm Completion
