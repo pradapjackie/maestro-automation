@@ -33,7 +33,8 @@ jobs:
         env:
           MAESTRO_API_KEY: ${{ secrets.MAESTRO_API_KEY_SECRETS }}
         run: |
-          export PATH="$PATH:$HOME/.maestro/bin"
-          maestro --version
-          echo ${{ secrets.MAESTRO_API_KEY }}
-          maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY }} .maestro/app-release.apk .maestro/android.yaml
+          echo "The secret used is MAESTRO_API_KEY_SECRETS"
+          # export PATH="$PATH:$HOME/.maestro/bin"
+          # maestro --version
+          # echo ${{ secrets.MAESTRO_API_KEY }}
+          # maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY }} .maestro/app-release.apk .maestro/android.yaml
