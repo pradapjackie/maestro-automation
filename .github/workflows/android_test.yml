@@ -35,4 +35,5 @@ jobs:
         run: |
           export PATH="$PATH:$HOME/.maestro/bin"
           maestro --version
-          maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
+          echo MAESTRO_API_KEY
+          # maestro cloud --apiKey $MAESTRO_API_KEY .maestro/app-release.apk .maestro/android.yaml
