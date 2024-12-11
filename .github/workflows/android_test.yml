@@ -36,4 +36,5 @@ jobs:
           export PATH="$PATH:$HOME/.maestro/bin"
           maestro --version
           ls
+          pwd
           # maestro cloud --apiKey ${{ secrets.MAESTRO_API_KEY_SECRETS }} .maestro/app-release.apk .maestro/android.yaml
